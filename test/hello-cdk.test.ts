@@ -19,3 +19,11 @@ test('SNS Topic Created', () => {
   // THEN
   expectCDK(stack).to(haveResource("AWS::SNS::Topic"));
 });
+
+test('ECR project Created', () => {
+  const app = new cdk.App();
+  // WHEN
+  const stack = new HelloCdk.HelloCdkStack(app, 'MyTestStack');
+  // THEN
+  expectCDK(stack).to(haveResource("AWS::ECR::Repository"));
+});
