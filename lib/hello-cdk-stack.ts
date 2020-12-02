@@ -3,6 +3,7 @@ import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as ecr from '@aws-cdk/aws-ecr';
 import * as cdk from '@aws-cdk/core';
+import { RemovalPolicy } from '@aws-cdk/core';
 
 export class HelloCdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -16,8 +17,21 @@ export class HelloCdkStack extends cdk.Stack {
 
     topic.addSubscription(new subs.SqsSubscription(queue));
 
+    const ecrLifecycleRule: ecr.LifecycleRule = {
+      description: "this is test",
+      maxImageCount: 10,
+      rulePriority: 1,
+      tagStatus: ecr.TagStatus.ANY
+    }
+
     const ecrRepository = new ecr.Repository(this, 'Repo', {
-      imageScanOnPush: true
+      imageScanOnPush: true,
+      repositoryName: "hogehoge",
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+
+    ecrRepository.addLifecycleRule(ecrLifecycleRule);
+
   }
 }
+

@@ -1,6 +1,9 @@
 clean:
 	rm -rd cdk.out
 
+install:
+	sudo npm install
+
 deploy:
 	cdk deploy
 
