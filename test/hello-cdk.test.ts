@@ -29,6 +29,13 @@ test('ECR project Created', () => {
   const stack = new HelloCdk.HelloCdkStack(app, 'MyTestStack');
   // THEN
 
+  const lifecyclePolicyText = {
+    rules: {
+      maxImageCount: 10,
+      rulePriority: 1,
+      tagStatus: ecr.TagStatus.ANY
+    }
+  }
 
 
   expectCDK(stack).to(haveResource("AWS::ECR::Repository", {
@@ -37,6 +44,9 @@ test('ECR project Created', () => {
     ImageScanningConfiguration: {
       scanOnPush: true
     },
+    // LifecycleRule: {
+    //   LifecyclePolicyText: JSON.stringify(lifecyclePolicyText)
+    // }
   }));
 });
 
